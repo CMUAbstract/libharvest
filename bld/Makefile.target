@@ -1,0 +1,11 @@
+ifeq ($(TOOLCHAIN),gcc)
+override DEPS += libharvest
+else # TOOLCHAIN != gcc
+
+# libharvest is special because it has to be compiled by GCC, not Clang,
+# even if the app is built with Clang
+override CFLAGS += -I$(LIB_ROOT)/libharvest/src/include
+override LFLAGS += -L$(LIB_ROOT)/libharvest/bld/gcc
+override LIBS += -ledb
+
+endif # TOOLCHAIN != gcc
