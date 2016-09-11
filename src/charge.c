@@ -15,7 +15,7 @@ void harvest_charge()
     GPIO(LIBHARVEST_COMP_PORT, SEL1) |= BIT(LIBHARVEST_COMP_PIN);
 
     // Setup Comparator_E
-    CECTL0 = CEIPEN | COMP_CHAN_SLE(LIBHARVEST_COMP_CHAN); // Enable V+, input channel
+    CECTL0 = CEIPEN | COMP_CHAN_SEL(LIBHARVEST_COMP_CHAN); // Enable V+, input channel
     CECTL1 = CEPWRMD_2;                       // ultra low power mode
 
 #ifdef LIBHARVEST_COMP_REF
