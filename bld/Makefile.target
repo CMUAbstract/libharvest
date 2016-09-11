@@ -6,6 +6,6 @@ else # TOOLCHAIN != gcc
 # even if the app is built with Clang
 override CFLAGS += -I$(LIB_ROOT)/libharvest/src/include
 override LFLAGS += -L$(LIB_ROOT)/libharvest/bld/gcc
-override LIBS += -ledb
+override LIBS += -lharvest
 
 endif # TOOLCHAIN != gcc
