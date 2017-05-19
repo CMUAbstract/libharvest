@@ -28,11 +28,18 @@ void harvest_charge()
 
     CECTL3 = COMP_PIN_INPUT_BUF_DISABLE(LIBHARVEST_COMP_CHAN); // Input Buffer Disable for C11 
     CECTL1 |= CEON;                           // Turn On Comparator_E
-    CEINT |= CEIE;
     __delay_cycles(VREF_SETTLE_CYCLES);       // delay for the reference to settle
 
-    __bis_SR_register(SLEEP_BITS + GIE);      // LPM3, COMPE_ISR will force exit
-    __no_operation();                        // For debug only
+    __disable_interrupt(); // atomic check -> sleep -> enable int
+
+    CEINT &= ~CEIFG; // clear int flag
+    CEINT |= CEIE;
+    if (!(CECTL1 & CEOUT)) { // if event happens after we check, we'll get the ISR after we sleep, b/c GIE
+        __bis_SR_register(SLEEP_BITS + GIE);      // LPM3, COMPE_ISR will force exit
+        __no_operation();                        // For debug only
+    } else {
+        __enable_interrupt(); // exit atomic region entered above
+    }
 }
 
 __attribute__ ((interrupt(COMP_E_VECTOR)))
