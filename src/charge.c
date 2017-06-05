@@ -1,6 +1,7 @@
 #include <msp430.h>
 
 #include <libmsp/periph.h>
+#include <libmsp/sleep.h>
 
 #include "charge.h"
 
@@ -28,7 +29,7 @@ void harvest_charge()
 
     CECTL3 = COMP_PIN_INPUT_BUF_DISABLE(LIBHARVEST_COMP_CHAN); // Input Buffer Disable for C11 
     CECTL1 |= CEON;                           // Turn On Comparator_E
-    __delay_cycles(VREF_SETTLE_CYCLES);       // delay for the reference to settle
+    msp_sleep(VREF_SETTLE_CYCLES);
 
     __disable_interrupt(); // atomic check -> sleep -> enable int
 
