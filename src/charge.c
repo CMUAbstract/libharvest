@@ -6,7 +6,7 @@
 #include "charge.h"
 
 #define SLEEP_BITS LPM3_bits
-#define VREF_SETTLE_CYCLES 75
+#define VREF_SETTLE_CYCLES 4 // @ libmsp's sleep clock (by default ACLK/64)
 
 // Wait for VCC above 1.2V (attach external signal to P9.3)
 void harvest_charge()
